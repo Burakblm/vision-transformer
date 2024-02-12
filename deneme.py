@@ -35,9 +35,9 @@ input_tensor = transform(pil_image)
 input_tensor = input_tensor.unsqueeze(0)
 
 text_inp = torch.tensor([[12,34,75,84]])
-text_out = torch.tensor([[42,34,76,84]])
-print(text_inp.size())
+text_out = torch.tensor([[12,34,75,84]])
 
 inpt = (input_tensor, text_inp)
 
 logits, loss = model(inpt, text_out)
+print(loss.item())
