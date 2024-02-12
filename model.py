@@ -294,5 +294,25 @@ class Vit(nn.Module):
             loss = None
 
         return logits, loss
+    
+    def generate(self, inputs, max_new_token):
+        context, x = inputs
+        idx = x
+        context = self.encoder(context) # (batch_size, context_len, d_model)
+
+        for i in range(max_new_token):
+            x = self.decoder(idx, context) # (batch_size, target_len, d_model)
+            logits = self.output(x)
+            logits = logits[:, -1, :]
+            props = F.softmax(logits, dim=-1)
+            idx_next = torch.multinomial(props, num_samples=1)
+            _, idx_next = torch.topk(props, k=1, dim=-1)
+            idx = torch.cat((idx, idx_next), dim=1)
+
+        return idx
+            
+
+
+
 
 
