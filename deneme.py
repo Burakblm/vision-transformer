@@ -7,37 +7,27 @@ import einops
 from dataclasses import dataclass
 from model import Vit
 
-@dataclass
-class ModelArgs:
-    block_size: int = 101
-    vocab_size: int = 32000
-    n_layer: int = 1
-    n_head: int = 1
-    n_embd: int = 256
-    dropout: float = 0.0
-    bias: bool = False
-    image_size: int = 300
-    patch_size: int = 30
-    chans: int = 3
 
-model = Vit(ModelArgs)
-
-# PIL ile resmi açma
-image_path = "/Users/burakbulama/Desktop/Vision Transformer/cat.jpeg"
-pil_image = Image.open(image_path)
+def train_dataset():
+    # PIL ile resmi açma
+    image_path = "/Users/burakbulama/Desktop/Vision Transformer/cat.jpeg"
+    pil_image = Image.open(image_path)
 
 
-transform = transforms.Compose([
-    transforms.ToTensor(),
-])
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+    ])
 
-input_tensor = transform(pil_image)
-input_tensor = input_tensor.unsqueeze(0)
+    input_tensor = transform(pil_image)
+    input_tensor = input_tensor.unsqueeze(0)
 
-text_inp = torch.tensor([[12,34,75,84]])
-text_out = torch.tensor([[12,34,75,84]])
-text_bos_tok = torch.tensor([[0]])
+    text_inp = torch.tensor([[12,34,75,84]])
+    text_out = torch.tensor([[12,34,75,84]])
+    text_bos_tok = torch.tensor([[0]])
+    inpt = (input_tensor, text_inp)
+    return inpt
 
+"""
 inpt = (input_tensor, text_inp)
 
 logits, loss = model(inpt, text_out)
@@ -46,3 +36,4 @@ print(loss.item())
 inpt = (input_tensor, text_bos_tok)
 out = model.generate(inpt, 20)
 print(out)
+"""
